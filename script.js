@@ -11,6 +11,21 @@ quizQuestions = [
       choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
       answer: "parentheses"
      },
+     {
+          title: "what was the street slang term of the TandyRadioShack80(TRS80):",
+          choices: ["the 80's", "Trash80", "Trisha80", "what the heck are you talking about, you old, old, pink haired lady!"],
+          answer: "Trash80"
+         },
+         {
+          title: "what was the first gaming system?",
+          choices: ["the magnavox odyssey", "nintendo entertainment system", "atari 2600", "sega genesis"],
+          answer: "the magnavox odyssey"
+         },
+         {
+          title: "what was the name of the first computer invented?",
+          choices: ["ENIAC-electronic numerical integrater and computer", "ENIA-electronic numerical integrater association", "ENI-electronic numerical integrater", "HAL"],
+          answer: "ENIAC-electronic numerical integrater and computer"
+         },
 
     ]
     //add variables to point to html elements and keep timer state
@@ -71,7 +86,7 @@ answerbutton.onclick=checkAnswer
 function checkAnswer(){
      if (this.value===quizQuestions[questionIndex].answer
      ){
-          console.log("correct")
+          console.log("Yeah. You got it!")
           //add right or wrong feedback here
           
 
@@ -82,18 +97,32 @@ function checkAnswer(){
      timerDisplay.textContent=time
      }
 
-questionIndex=questionIndex+1
+questionIndex=questionIndex+1;
+
 if(questionIndex===quizQuestions.length){
      //quiz end function here
-     console.log ("Your done!")
-} else{
-     cycleQuestions()
+     endQuiz();
+          console.log ("Your done!")
+} else {
+     cycleQuestions();
 }
+//stop timer.clearInterval(timerState)
+function endQuiz(){
+     clearInterval(time);
+     timerDisplay.textContent = time;
+
+}
+
+
+    
+
+
+
+
 
     
 }
-    //function to end quiz hide question screen, unhide end sceen, and 
-    //stop timer.clearInterval(timerState)
+    
     
 //start button
 startbutton.onclick=startQuiz
