@@ -39,6 +39,8 @@ var startbutton = document.getElementById("startBtn");
 var startScreen = document.getElementById ("start-screen")
 var questionTitle = document.getElementById ("question-title")
 var endQuiz = document.getElementById ("end-screen")
+var initialsEl = document.getElementById("initials");
+var feedbackEl = document.getElementById("feedback");
 
 function add (num1, num2){
 var total = num1 + num2
@@ -48,7 +50,8 @@ add(3, 4)
 
  //start quiz function that hides start screen starts timer and unhides questions
  function startQuiz(){
-     startScreen.setAttribute("class","hide");//end portion needs to say questions.setattribute("class", "hide")
+     startScreen.setAttribute("class","hide");
+     //end portion needs to say questions.setattribute("class", "hide")
      questions.removeAttribute("class");
      timerState=setInterval(function(){
           time=time-1;
@@ -57,12 +60,7 @@ add(3, 4)
      },1000)
 //place cycle questions here
 cycleQuestions()
- }
-
-
-
-
-   
+ }   
 
     //function to cycle questions
 function cycleQuestions(){
@@ -111,16 +109,77 @@ function endQuiz(){
      clearInterval(time);
      timerDisplay.textContent = time;
 
+
+     // show end screen
+  var endScreenEl = document.getElementById("end-screen");
+  endScreenEl.setAttribute("class", " ");
+
+  // show final score
+  var finalScoreEl = document.getElementById("final-score");
+  finalScoreEl.textContent = time;
+
+  // hide questions section
+  questionsEl.setAttribute("class", "hide");
 }
 
+function clockTick() {
+  // update time
+  time--;
+timerDisplay.textContent = time;
 
-    
+  // check if user ran out of time
+  if(time <= 0)
+    quizEnd();
+  
+}
 
+function saveHighscore() {
+  // get value of input box
+  var initials = initialsEl.value.toUpperCase();
+  // make sure value wasn't empty
+  if(initials === ""){ 
+    alert("Input mustn't be blank'");
+    return;
+  }
+  else if(initials.length > 3){
+    alert("Input must be no more than 3 characters");
+    return;
+  }
+  else{
+    // get saved scores from localstorage, or if not any, set to empty array
+    var highscores;
+    if(JSON.parse(localStorage.getItem("highscores")) != null)
+      highscores = JSON.parse(window.localStorage.getItem("highscores"));
+    else
+      highscores = [];
+    // format new score object for current user
+    var newScore = {
+      initials: initials,
+      score: time
+    };
+    highscores.push(newScore);
+    // save to localstorage
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+    // redirect to next page 
+    location.href = "highscores.html";
+  }
+}
+       //why are you not working right?
 
+function checkForEnter(event) {
+  // check if event key is enter
+    // saveHighscore
+    if(event.keyCode === 13)
+      saveHighscore();
+}
 
+// user clicks button to submit initials
+submitBtn.onclick = saveHighscore;
 
+// user clicks button to start quiz
+startBtn.onclick = startQuiz;
 
-    
+initialsEl.onkeyup = checkForEnter;
 }
     
     
